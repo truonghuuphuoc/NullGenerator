@@ -37,6 +37,16 @@ namespace NULL_is_my_son
         private double numberPacket_sheet_1;
         private double sheet_2_numberPacket;
 
+        private ICellStyle sheet_1_headerStyle_2;
+        private ICellStyle sheet_1_headerStyle;
+
+        private ICellStyle sheet_2_headerStyle_1;
+        private ICellStyle sheet_2_headerStyle_2;
+
+        private ICellStyle sheet_2_bottomStyle_1;
+        private ICellStyle sheet_2_bottomStyle_2;
+        private ICellStyle sheet_2_mainStyle_2;
+
         public PackingListGenerator(ParkingListParser packingParser, Database databaseInfor, String file)
         {
             this.databaseInfor = databaseInfor;
@@ -51,6 +61,87 @@ namespace NULL_is_my_son
             sheet_1 = (XSSFSheet)wb.CreateSheet("工作表2");
             sheet_2 = (XSSFSheet)wb.CreateSheet("PL detail");
 
+            sheet_1_headerStyle = wb.CreateCellStyle();
+
+            sheet_1_headerStyle.Alignment = HorizontalAlignment.Center;
+            sheet_1_headerStyle.VerticalAlignment = VerticalAlignment.Center;
+            sheet_1_headerStyle.BorderTop = BorderStyle.Thin;
+            sheet_1_headerStyle.BorderRight = BorderStyle.Thin;
+            sheet_1_headerStyle.BorderBottom = BorderStyle.Thin;
+            sheet_1_headerStyle.BorderLeft = BorderStyle.Thin;
+
+
+            sheet_1_headerStyle_2 = wb.CreateCellStyle();
+
+            sheet_1_headerStyle_2.Alignment = HorizontalAlignment.Center;
+            sheet_1_headerStyle_2.VerticalAlignment = VerticalAlignment.Center;
+            sheet_1_headerStyle_2.BorderTop = BorderStyle.Thin;
+            sheet_1_headerStyle_2.BorderRight = BorderStyle.Thin;
+            sheet_1_headerStyle_2.BorderBottom = BorderStyle.Thin;
+            sheet_1_headerStyle_2.BorderLeft = BorderStyle.Thin;
+            sheet_1_headerStyle_2.FillForegroundColor = IndexedColors.Yellow.Index;
+            sheet_1_headerStyle_2.FillPattern = FillPattern.SolidForeground;
+
+
+            sheet_2_headerStyle_1 = wb.CreateCellStyle();
+            IFont headerbold_1 = wb.CreateFont();
+            headerbold_1.Boldweight = (short)FontBoldWeight.Bold;
+            headerbold_1.FontHeight = 13;
+
+            sheet_2_headerStyle_1.SetFont(headerbold_1);
+            sheet_2_headerStyle_1.Alignment = HorizontalAlignment.Center;
+            sheet_2_headerStyle_1.VerticalAlignment = VerticalAlignment.Center;
+            sheet_2_headerStyle_1.BorderTop = BorderStyle.Thin;
+            sheet_2_headerStyle_1.BorderRight = BorderStyle.Thin;
+            sheet_2_headerStyle_1.BorderBottom = BorderStyle.Thin;
+
+            sheet_2_headerStyle_2 = wb.CreateCellStyle();
+            IFont headerbold_2 = wb.CreateFont();
+            headerbold_2.Boldweight = (short)FontBoldWeight.Bold;
+            headerbold_2.FontHeight = 12;
+
+            headerbold_2.Underline = FontUnderlineType.Single;
+
+            sheet_2_headerStyle_2.SetFont(headerbold_2);
+            sheet_2_headerStyle_2.Alignment = HorizontalAlignment.Center;
+            sheet_2_headerStyle_2.VerticalAlignment = VerticalAlignment.Center;
+            sheet_2_headerStyle_2.BorderTop = BorderStyle.Thin;
+            sheet_2_headerStyle_2.BorderRight = BorderStyle.Thin;
+            sheet_2_headerStyle_2.BorderBottom = BorderStyle.Thin;
+
+            sheet_2_bottomStyle_1 = wb.CreateCellStyle();
+            sheet_2_bottomStyle_1.FillForegroundColor = IndexedColors.Aqua.Index;
+            sheet_2_bottomStyle_1.FillPattern = FillPattern.SolidForeground;
+
+            sheet_2_bottomStyle_1.BorderBottom = BorderStyle.Thin;
+            sheet_2_bottomStyle_1.BorderLeft = BorderStyle.Thin;
+            sheet_2_bottomStyle_1.BorderRight = BorderStyle.Thin;
+
+            IFont boldFont_1 = wb.CreateFont();
+            boldFont_1.Boldweight = (short)FontBoldWeight.Bold;
+            boldFont_1.FontHeight = 13;
+            boldFont_1.Color = IndexedColors.Red.Index;
+            sheet_2_bottomStyle_1.SetFont(boldFont_1);
+
+            sheet_2_bottomStyle_2 = wb.CreateCellStyle();
+            sheet_2_bottomStyle_2.FillForegroundColor = IndexedColors.Aqua.Index;
+            sheet_2_bottomStyle_2.FillPattern = FillPattern.SolidForeground;
+
+            sheet_2_bottomStyle_2.BorderBottom = BorderStyle.Thin;
+            sheet_2_bottomStyle_2.BorderLeft = BorderStyle.Thin;
+            sheet_2_bottomStyle_2.BorderRight = BorderStyle.Thin;
+
+            IFont boldFont_2 = wb.CreateFont();
+            boldFont_2.Boldweight = (short)FontBoldWeight.Bold;
+            boldFont_2.FontHeight = 13;
+            boldFont_2.Color = IndexedColors.Black.Index;
+            sheet_2_bottomStyle_2.SetFont(boldFont_2);
+
+
+            sheet_2_mainStyle_2 = wb.CreateCellStyle();
+            sheet_2_mainStyle_2.BorderBottom = BorderStyle.Dotted;
+            sheet_2_mainStyle_2.BorderRight = BorderStyle.Thin;
+
             rowIndex_sheet_1 = 0;
             sheet_2_rowIndex = 0;
 
@@ -59,7 +150,9 @@ namespace NULL_is_my_son
 
             for (int idex = 0; idex < Sheet_1_Header.Length; idex++)
             {
-                r.CreateCell(idex).SetCellValue(Sheet_1_Header[idex]);
+                var cell = r.CreateCell(idex);
+                cell.SetCellValue(Sheet_1_Header[idex]);
+                cell.CellStyle = sheet_1_headerStyle;
             }
         }
 
@@ -172,81 +265,57 @@ namespace NULL_is_my_son
 
                 for (int idex = 0; idex < Sheet_1_Header.Length; idex++)
                 {
+                    ICell cell = r.CreateCell(idex);
+                    cell.CellStyle = sheet_1_headerStyle;
                     switch (idex)
                     {
                         case 0:
-                            r.CreateCell(idex).SetCellValue(this.packingParser.GetDateTime());
+                            cell.SetCellValue(this.packingParser.GetDateTime());
                             break;
 
                         case 1:
-                            r.CreateCell(idex).SetCellValue(item.GetNameProduct());
+                            cell.SetCellValue(item.GetNameProduct());
                             break;
 
                         case 2:
-                            r.CreateCell(idex).SetCellValue(item.GetColor1());
+                            cell.SetCellValue(item.GetColor1());
                             break;
 
                         case 3:
-                            r.CreateCell(idex).SetCellValue(item.GetColor2());
+                            cell.SetCellValue(item.GetColor2());
                             break;
 
                         case 4:
-                            r.CreateCell(idex).SetCellValue(item.GetProductSize());
+                            cell.SetCellValue(item.GetProductSize());
                             break;
 
                         case 5:
-                            {
-                                ICell cell = r.CreateCell(idex);
-                                cell.SetCellValue(item.GetQuantity());
-
-                                ICellStyle style = wb.CreateCellStyle();
-                                style.FillForegroundColor = IndexedColors.Yellow.Index;
-                                style.FillPattern = FillPattern.SolidForeground;
-
-                                cell.CellStyle = style; 
-                                break;
-                            }
+                            cell.SetCellValue(item.GetQuantity());
+                            cell.CellStyle = sheet_1_headerStyle_2;
+                            break;
 
                         case 6:
-                            {
-                                ICell cell = r.CreateCell(idex);
-                                if (valueMerger > item.GetQuantity())
-                                {
-                                    ICellStyle style = wb.CreateCellStyle();
-                                    style.VerticalAlignment = VerticalAlignment.Center;
-                                    cell.CellStyle = style;
-                                }
-                                cell.SetCellValue(1);
-                                break;
-                            }
+                            cell.SetCellValue(1);
+                            break;
 
                         case 7:
-                            r.CreateCell(idex).SetCellValue(numberPacket_sheet_1);
+                            cell.SetCellValue(numberPacket_sheet_1);
                             break;
 
                         case 8:
-                            {
-                                ICell cell = r.CreateCell(idex);
-                                if (valueMerger > item.GetQuantity())
-                                {
-                                    ICellStyle style = wb.CreateCellStyle();
-                                    style.VerticalAlignment = VerticalAlignment.Center;
-                                    cell.CellStyle = style;
-                                }
-                                cell.SetCellValue(valueMerger);
-                                break;
-                            }
+                            cell.SetCellValue(valueMerger);
+                            break;
 
                         case 9:
-                            r.CreateCell(idex).SetCellValue(databaseItem.GetNetWeight());
+                            cell.SetCellValue(databaseItem.GetNetWeight());
                             break;
 
                         case 10:
-                            r.CreateCell(idex).SetCellValue(databaseItem.GetAllWeight());
+                            cell.SetCellValue(databaseItem.GetAllWeight());
                             break;
 
                         case 11:
-                            r.CreateCell(idex).SetCellValue(databaseItem.GetPacketInformation());
+                            cell.SetCellValue(databaseItem.GetPacketInformation());
                             break;
 
                         default:
@@ -265,54 +334,57 @@ namespace NULL_is_my_son
 
                     for (int idex = 0; idex < Sheet_1_Header.Length; idex++)
                     {
+                        ICell cell = r.CreateCell(idex);
+                        cell.CellStyle = sheet_1_headerStyle;
+
                         switch (idex)
                         {
                             case 0:
-                                r.CreateCell(idex).SetCellValue(this.packingParser.GetDateTime());
+                                cell.SetCellValue(this.packingParser.GetDateTime());
                                 break;
 
                             case 1:
-                                r.CreateCell(idex).SetCellValue(item.GetNameProduct());
+                                cell.SetCellValue(item.GetNameProduct());
                                 break;
 
                             case 2:
-                                r.CreateCell(idex).SetCellValue(item.GetColor1());
+                                cell.SetCellValue(item.GetColor1());
                                 break;
 
                             case 3:
-                                r.CreateCell(idex).SetCellValue(item.GetColor2());
+                                cell.SetCellValue(item.GetColor2());
                                 break;
 
                             case 4:
-                                r.CreateCell(idex).SetCellValue(item.GetProductSize());
+                                cell.SetCellValue(item.GetProductSize());
                                 break;
 
                             case 5:
-                                r.CreateCell(idex).SetCellValue(databaseItem.GetMaxPacketSize());
+                                cell.SetCellValue(databaseItem.GetMaxPacketSize());
                                 break;
 
                             case 6:
-                                r.CreateCell(idex).SetCellValue(1);
+                                cell.SetCellValue(1);
                                 break;
 
                             case 7:
-                                r.CreateCell(idex).SetCellValue(numberPacket_sheet_1);
+                                cell.SetCellValue(numberPacket_sheet_1);
                                 break;
 
                             case 8:
-                                r.CreateCell(idex).SetCellValue(databaseItem.GetMaxPacketSize());
+                                cell.SetCellValue(databaseItem.GetMaxPacketSize());
                                 break;
 
                             case 9:
-                                r.CreateCell(idex).SetCellValue(databaseItem.GetNetWeight());
+                                cell.SetCellValue(databaseItem.GetNetWeight());
                                 break;
 
                             case 10:
-                                r.CreateCell(idex).SetCellValue(databaseItem.GetAllWeight());
+                                cell.SetCellValue(databaseItem.GetAllWeight());
                                 break;
 
                             case 11:
-                                r.CreateCell(idex).SetCellValue(databaseItem.GetPacketInformation());
+                                cell.SetCellValue(databaseItem.GetPacketInformation());
                                 break;
 
                             default:
@@ -331,62 +403,56 @@ namespace NULL_is_my_son
 
                     for (int idex = 0; idex < Sheet_1_Header.Length; idex++)
                     {
+                        ICell cell = r.CreateCell(idex);
+                        cell.CellStyle = sheet_1_headerStyle;
+
                         switch (idex)
                         {
                             case 0:
-                                r.CreateCell(idex).SetCellValue(this.packingParser.GetDateTime());
+                                cell.SetCellValue(this.packingParser.GetDateTime());
                                 break;
 
                             case 1:
-                                r.CreateCell(idex).SetCellValue(merger.GetNameProduct());
+                                cell.SetCellValue(merger.GetNameProduct());
                                 break;
 
                             case 2:
-                                r.CreateCell(idex).SetCellValue(merger.GetColor1());
+                                cell.SetCellValue(merger.GetColor1());
                                 break;
 
                             case 3:
-                                r.CreateCell(idex).SetCellValue(merger.GetColor2());
+                                cell.SetCellValue(merger.GetColor2());
                                 break;
 
                             case 4:
-                                r.CreateCell(idex).SetCellValue(merger.GetProductSize());
+                                cell.SetCellValue(merger.GetProductSize());
                                 break;
 
                             case 5:
-                                {
-                                    ICell cell = r.CreateCell(idex);
-                                    cell.SetCellValue(merger.GetQuantity());
-                                    ICellStyle style = wb.CreateCellStyle();
-                                    style.FillForegroundColor = IndexedColors.Yellow.Index;
-                                    style.FillPattern = FillPattern.SolidForeground;
-
-                                    cell.CellStyle = style; 
-                                    break;
-                                }
+                                cell.SetCellValue(merger.GetQuantity());
+                                cell.CellStyle = sheet_1_headerStyle_2;
+                                break;
 
                             case 6:
-                                r.CreateCell(idex);
                                 break;
 
                             case 7:
-                                r.CreateCell(idex).SetCellValue(numberPacket_sheet_1);
+                                cell.SetCellValue(numberPacket_sheet_1);
                                 break;
 
                             case 8:
-                                r.CreateCell(idex);
                                 break;
 
                             case 9:
-                                r.CreateCell(idex).SetCellValue(databaseItem.GetNetWeight());
+                                cell.SetCellValue(databaseItem.GetNetWeight());
                                 break;
 
                             case 10:
-                                r.CreateCell(idex).SetCellValue(databaseItem.GetAllWeight());
+                                cell.SetCellValue(databaseItem.GetAllWeight());
                                 break;
 
                             case 11:
-                                r.CreateCell(idex).SetCellValue(databaseItem.GetPacketInformation());
+                                cell.SetCellValue(databaseItem.GetPacketInformation());
                                 break;
 
                             default:
@@ -413,6 +479,8 @@ namespace NULL_is_my_son
             ICell cell;
             int type;
 
+            int start_row, end_row;
+
             if(!(item != null && item.GetListItem() != null && item.GetListItem().Count > 0))
             {
                 return;
@@ -421,6 +489,7 @@ namespace NULL_is_my_son
             //Clear header value
             row = sheet_2.CreateRow(sheet_2_rowIndex);
             sheet_2_rowIndex++;
+            start_row = sheet_2_rowIndex + 1;
 
             if(CheckExistsSize_2(item.GetListItem().ElementAt(0).GetProductSize()) < 0)
             {
@@ -437,32 +506,181 @@ namespace NULL_is_my_son
 
                 cell.SetCellValue(Sheet_2_GetHeaderString(type, run));
 
-                if(run == 0)
+                if (run == 0)
                 {
-                    cell.SetCellValue(item.GetNameProduct());
+                    cell.SetCellValue(item.GetNameProduct() + " - BRASSIERES");
+
+
+                    cell.CellStyle = sheet_2_headerStyle_1;
+                }
+                else
+                {
+                    cell.CellStyle = sheet_2_headerStyle_2;
                 }
             }
 
             NPOI.SS.Util.CellRangeAddress range = new NPOI.SS.Util.CellRangeAddress(sheet_2_rowIndex - 1, sheet_2_rowIndex - 1, 0, 4);                                                                           
             sheet_2.AddMergedRegion(range);
 
+
             foreach(PackingListItem packItem in item.GetListItem())
             {
+
                 //create new row
                 row = sheet_2.CreateRow(sheet_2_rowIndex);
                 sheet_2_rowIndex++;
 
 
+                int phan_nguyen = (int)(packItem.GetQuantity() / item.GetDatabaseItem().GetMaxPacketSize());
+                int size_index = Sheet_2_GetColumIndex(type, packItem.GetProductSize());
+
                 for (int run = 0; run < Sheet_2_GetNumberOfColum(); run++)
                 {
+                    cell = row.CreateCell(run);
+
+                    cell.CellStyle = sheet_2_mainStyle_2;
+
+                    switch (run)
+                    {
+                        case 0:
+                            if (phan_nguyen > 1)
+                            {
+                                double from = sheet_2_numberPacket + 1;
+                                double to = sheet_2_numberPacket + phan_nguyen;
+                                cell.SetCellValue(from + " - " + to);
+
+                                sheet_2_numberPacket += phan_nguyen;
+                            }
+                            else
+                            {
+                                sheet_2_numberPacket++;
+                                cell.SetCellValue(sheet_2_numberPacket + "");
+                            }
+                            break;
+
+                        case 1:
+                            if (phan_nguyen > 0)
+                            {
+                                cell.SetCellValue(phan_nguyen);
+                            }
+                            else
+                            {
+                                cell.SetCellValue(1);
+                            }
+                            break;
+
+                        case 2:
+                            cell.SetCellValue(packItem.GetNameProduct());
+                            break;
+
+                        case 3:
+                            cell.SetCellValue(packItem.GetColor1());
+                            break;
+
+                        case 4:
+                            cell.SetCellValue(packItem.GetColor2());
+                            break;
+
+                        default:
+                            if (run == size_index)
+                            {
+                                if (phan_nguyen > 0)
+                                {
+                                    String formula = item.GetDatabaseItem().GetMaxPacketSize() + "*$B" + sheet_2_rowIndex;
+                                    cell.SetCellFormula(formula);
+                                }
+                                else
+                                {
+                                    cell.SetCellValue(packItem.GetQuantity());
+                                }
+                            }
+                            else
+                            {
+                                int total = Sheet_2_GetNumberOfColum();
+
+                                if((total - 4) == run)
+                                {
+                                    String columName = Sheet_2_GetStringOfColum(Sheet_2_GetNumberOfColum() - 4);
+                                    String formula = "SUM(F" + sheet_2_rowIndex + ":" + columName + sheet_2_rowIndex + ")";
+                                    cell.SetCellFormula(formula);
+                                }
+                                else  if((total - 3) == run)
+                                {
+                                    cell.SetCellValue("PCS");
+                                }
+                                else  if((total - 2) == run)
+                                {
+                                    String formula = item.GetDatabaseItem().GetNetWeight() + "*B" + sheet_2_rowIndex;
+                                    cell.SetCellFormula(formula);
+                                }
+                                else  if((total - 1) == run)
+                                {
+                                    String formula = item.GetDatabaseItem().GetAllWeight() + "*B" + sheet_2_rowIndex;
+                                    cell.SetCellFormula(formula);
+                                }
+                                else
+                                {
+                                    cell.SetCellValue("");
+                                }
+                               
+                            }
+                            break;
+                    }
                 }
 
                 if (packItem.GetMergerList() != null && packItem.GetMergerList().Count > 0)
                 {
                     //insert to same row
+                    foreach (MergerItem mergerItem in packItem.GetMergerList())
+                    {
+                        size_index = Sheet_2_GetColumIndex(type, mergerItem.GetProductSize());
+
+                        cell = row.GetCell(size_index);
+                        cell.SetCellValue(mergerItem.GetQuantity());
+                    }
                 }
             }
 
+            end_row = sheet_2_rowIndex;
+
+            //sum row
+            row = sheet_2.CreateRow(sheet_2_rowIndex);
+            sheet_2_rowIndex++;
+
+            for (int run = 0; run < Sheet_2_GetNumberOfColum(); run++)
+            {
+                cell = row.CreateCell(run);
+                if (run == 2)
+                {
+                    cell.CellStyle = sheet_2_bottomStyle_2; 
+                }
+                else
+                {
+                    cell.CellStyle = sheet_2_bottomStyle_1; 
+                }
+                switch (run)
+                {
+                    case 0:
+                        cell.SetCellValue("P'KGS");
+                        break;
+
+                    case 2:
+                        cell.SetCellValue("SUB TOTAL:");
+                        break;
+
+                    case 3:
+                    case 4:
+                        break;
+
+                    default:
+                        {
+                            String colum = Sheet_2_GetStringOfColum(run + 1);
+                            String fomula = "SUM(" + colum + start_row + ":" + colum + end_row + ")";
+                            cell.SetCellFormula(fomula);
+                            break;
+                        }
+                }
+            }
 
         }
 
@@ -518,9 +736,9 @@ namespace NULL_is_my_son
                 Sheet_2_size_1 = new List<string>();
             }
 
-            int value = Sheet_2_size_2.Length > Sheet_2_size_1.Count ? Sheet_2_size_1.Count : Sheet_2_size_2.Length;
+            int value = Sheet_2_size_2.Length > Sheet_2_size_1.Count ? Sheet_2_size_2.Length : Sheet_2_size_1.Count;
 
-            value += 5;
+            value += 5/*before*/ + 4 /*after*/;
 
             return value;
         }
@@ -558,8 +776,6 @@ namespace NULL_is_my_son
                     return "";
                 }
             }
-
-            return "";
             
         }
 
@@ -594,5 +810,31 @@ namespace NULL_is_my_son
             return  (index + 5);
 
         }
+
+        private String Sheet_2_GetStringOfColum( int size)
+        {
+            byte[] data;
+
+            int nguyen = size / 27;
+            int le = 0;
+
+            if (nguyen > 0)
+            {
+                le = size % 26;
+
+                data = new byte[2];
+                data[0] = (byte)(0x40 + (byte)nguyen);
+                data[1] = (byte)(0x40 + (byte)le);
+            }
+            else
+            {
+                le = size % 27;
+                data = new byte[1];
+                data[0] = (byte)(0x40 + (byte)le);
+            }
+
+            return Encoding.ASCII.GetString(data); ;
+        }
+       
     }
 }
