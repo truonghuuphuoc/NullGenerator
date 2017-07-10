@@ -291,7 +291,10 @@ namespace NULL_is_my_son
 
                         case 5:
                             cell.SetCellValue(item.GetQuantity());
-                            cell.CellStyle = sheet_1_headerStyle_2;
+                            if (valueMerger > item.GetQuantity())
+                            {
+                                cell.CellStyle = sheet_1_headerStyle_2;
+                            }
                             break;
 
                         case 6:
@@ -508,7 +511,7 @@ namespace NULL_is_my_son
 
                 if (run == 0)
                 {
-                    cell.SetCellValue(item.GetNameProduct() + " - BRASSIERES");
+                    cell.SetCellValue(item.GetNameProduct() + "");
 
 
                     cell.CellStyle = sheet_2_headerStyle_1;
@@ -636,7 +639,14 @@ namespace NULL_is_my_son
                         size_index = Sheet_2_GetColumIndex(type, mergerItem.GetProductSize());
 
                         cell = row.GetCell(size_index);
-                        cell.SetCellValue(mergerItem.GetQuantity());
+                        if (cell.CellType == CellType.Numeric)
+                        {
+                            cell.SetCellValue(mergerItem.GetQuantity() + cell.NumericCellValue);
+                        }
+                        else
+                        {
+                            cell.SetCellValue(mergerItem.GetQuantity());
+                        }
                     }
                 }
             }
