@@ -447,15 +447,15 @@ namespace NULL_is_my_son
                                 break;
 
                             case 9:
-                                cell.SetCellValue(databaseItem.GetNetWeight());
+                                //cell.SetCellValue(databaseItem.GetNetWeight());
                                 break;
 
                             case 10:
-                                cell.SetCellValue(databaseItem.GetAllWeight());
+                                //cell.SetCellValue(databaseItem.GetAllWeight());
                                 break;
 
                             case 11:
-                                cell.SetCellValue(databaseItem.GetPacketInformation());
+                                //cell.SetCellValue(databaseItem.GetPacketInformation());
                                 break;
 
                             default:
@@ -481,6 +481,7 @@ namespace NULL_is_my_son
             NPOI.SS.UserModel.IRow row;
             ICell cell;
             int type;
+            String nametype = "";
 
             int start_row, end_row;
 
@@ -509,9 +510,18 @@ namespace NULL_is_my_son
 
                 cell.SetCellValue(Sheet_2_GetHeaderString(type, run));
 
+                if(item.GetNameProduct().StartsWith("R"))
+                {
+                    nametype = " - BRASSIERES";
+                }
+                else
+                {
+                    nametype = " - BRIEFS";
+                }
+
                 if (run == 0)
                 {
-                    cell.SetCellValue(item.GetNameProduct() + "");
+                    cell.SetCellValue(item.GetNameProduct() + nametype);
 
 
                     cell.CellStyle = sheet_2_headerStyle_1;
