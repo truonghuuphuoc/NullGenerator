@@ -128,6 +128,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CombineMergerListItem.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseItem.cs" />
     <Compile Include="MainFormApp.cs">
@@ -137,8 +138,10 @@
       <DependentUpon>MainFormApp.cs</DependentUpon>
     </Compile>
     <Compile Include="MergerItem.cs" />
+    <Compile Include="PackingListDetailSheet2Generator.cs" />
     <Compile Include="PackingListGenerator.cs" />
     <Compile Include="PackingListItem.cs" />
+    <Compile Include="PackingListSheet1Generator.cs" />
     <Compile Include="ParkingListParser.cs" />
     <Compile Include="ParkingParserItem.cs" />
     <Compile Include="Program.cs" />
