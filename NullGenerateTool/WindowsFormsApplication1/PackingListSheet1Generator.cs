@@ -139,7 +139,10 @@ namespace NULL_is_my_son
                             break;
 
                         case 8:
-                            cell.SetCellValue(valueMerger);
+                            if (valueMerger <= item.GetQuantity())
+                            {
+                                cell.SetCellValue(valueMerger);
+                            }
                             break;
 
                         case 9:
@@ -295,6 +298,13 @@ namespace NULL_is_my_son
                                 break;
                         }
                     }
+                }
+
+                r= sheet_1.GetRow(rowIndex_sheet_1 - (1 + item.GetMergerList().Count));
+                String fomular = "SUM(F" + (rowIndex_sheet_1 -  item.GetMergerList().Count) + ":F" + rowIndex_sheet_1 + ")";
+                if(r.GetCell(8) != null)
+                {
+                    r.GetCell(8).CellFormula = fomular;
                 }
 
                 NPOI.SS.Util.CellRangeAddress range_1 = new NPOI.SS.Util.CellRangeAddress(rowIndex_sheet_1 - (1 + item.GetMergerList().Count),

@@ -490,10 +490,29 @@ namespace NULL_is_my_son
                 {
                     return run;
                 }
+            }
 
-                if (String.Compare(size, Sheet_2_size_1.ElementAt(run)) > 0)
+            for (int run = 0; run < Sheet_2_size_1.Count; run++)
+            {
+                String element = Sheet_2_size_1.ElementAt(run);
+
+                if (size.Length != element.Length)
                 {
-                    index = run;
+                    if (size[0] < element[0])
+                    {
+                        index = run;
+                        break;
+                    }
+                    else if(size[0] == element[0] && size.Length < element.Length)
+                    {
+                        index = run - 1;
+                        break;
+                    }
+                }
+                else if (String.Compare(size, Sheet_2_size_1.ElementAt(run)) < 0)
+                {
+                    index = run - 1;
+                    break;
                 }
             }
 
